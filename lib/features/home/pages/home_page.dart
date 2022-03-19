@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moja_apka/features/auth/pages/user_profile.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({
@@ -10,8 +11,20 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Center(
-          child: Text('My Activity'),
+          child: Text('Twój cel'),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const UserProfile(),
+                ),
+              );
+            },
+            icon: const Icon(Icons.person),
+          ),
+        ],
       ),
     );
   }
