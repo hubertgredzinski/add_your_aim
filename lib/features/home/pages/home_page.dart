@@ -16,7 +16,7 @@ class _HomePageState extends State<HomePage> {
   int currrentIndex = 0;
   final screens = [
     const AimsPage(),
-    const AddAimPage(),
+     AddAimPage(),
     const HistoryPage(),
   ];
   @override

@@ -9,6 +9,7 @@ class HistoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(226, 236, 236, 236),
       appBar: AppBar(
         title: const Center(
           child: Text('Historia'),
