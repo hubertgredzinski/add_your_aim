@@ -7,7 +7,7 @@ class AddAimPage extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final fieldname = TextEditingController();
+  final controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -34,16 +34,16 @@ class AddAimPage extends StatelessWidget {
         onPressed: () {
           FirebaseFirestore.instance.collection('goal').add;
           ({
-            'title': fieldname.text,
+            'title': controller.text,
           });
-          fieldname.clear();
+          controller.clear();
         },
         child: const Icon(Icons.add),
       ),
       body: ListView(
         children: [
           TextField(
-            controller: fieldname,
+            controller: controller,
           )
         ],
       ),

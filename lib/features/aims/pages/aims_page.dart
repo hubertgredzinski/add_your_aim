@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moja_apka/features/aims/pages/cubit/aims_cubit.dart';
 import 'package:moja_apka/features/auth/pages/user_profile.dart';
 
 class AimsPage extends StatelessWidget {
@@ -28,34 +30,46 @@ class AimsPage extends StatelessWidget {
           ),
         ],
       ),
+      body: BlocProvider(
+        create: (context) => AimsCubit()..start(),
+        child: BlocBuilder<AimsCubit, AimsState>(
+          builder: (context, state) {
+            state.documents;
+            return StreamBuilder<QuerySnapshot>(
+              builder: (context, snapshot) {
+                if (state.errorMessage.isNotEmpty) {
+                  return Center(
+                      child: Text('Wystąpił błąd : ${state.errorMessage}'));
+                }
 
-      body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('goal').snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return const Text('Wystąpił błąd');
-          }
+                if (state.isLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                }
 
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Text('Proszę czekać trwa ładowanie danych');
-          }
+                final documents = state.documents;
 
-          final documents = snapshot.data!.docs;
-
-          return ListView(
-            children: [
-              for (final document in documents) ...[
-                Dismissible(
-                  key: ValueKey(document.id),
-                  onDismissed: (_) {FirebaseFirestore.instance.collection('goal').doc(document.id).delete();},
-                  child: AimCategory(
-                    document['title'],
-                  ),
-                ),
-              ],
-            ],
-          );
-        },
+                return ListView(
+                  children: [
+                    for (final document in documents) ...[
+                      Dismissible(
+                        key: ValueKey(document.id),
+                        onDismissed: (_) {
+                          FirebaseFirestore.instance
+                              .collection('goal')
+                              .doc(document.id)
+                              .delete();
+                        },
+                        child: AimCategory(
+                          document['title'],
+                        ),
+                      ),
+                    ],
+                  ],
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }
