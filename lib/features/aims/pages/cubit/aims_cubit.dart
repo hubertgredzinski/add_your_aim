@@ -16,11 +16,19 @@ class AimsCubit extends Cubit<AimsState> {
 
   Future<void> add(
     String title,
+    String aim,
+    String imageURL,
+    DateTime releaseDate,
   ) async {
     try {
-      await FirebaseFirestore.instance.collection('goal').add({
-        'title': title,
-      });
+      await FirebaseFirestore.instance.collection('goal').add(
+        {
+          'title': title,
+          'aim': aim,
+          'image_url': imageURL,
+          'release_date': releaseDate
+        },
+      );
       emit(
         const AimsState(isLoading: false, errorMessage: ''),
       );
