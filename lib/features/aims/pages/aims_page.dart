@@ -131,7 +131,7 @@ class _AimsPageBody extends StatelessWidget {
         TextField(
           decoration: const InputDecoration(
             labelText: 'Cel',
-            hintText: '50',
+            hintText: 'km',
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.black, width: 1),
             ),
@@ -157,19 +157,19 @@ class _AimsPageBody extends StatelessWidget {
         ),
         const SizedBox(height: 30),
         ElevatedButton(
-            onPressed: () async {
-              final selectedDate = await showDatePicker(
-                context: context,
-                initialDate: DateTime.now(),
-                firstDate: DateTime.now(),
-                lastDate: DateTime.now().add(
-                  const Duration(days: 365 * 100),
-                ),
-              );
-              onDateChanged(selectedDate);
-            },
-            child: Text(selectedDateFormatted ??
-                'Wybierz datę wykonania celu aktywności'))
+          onPressed: () async {
+            final selectedDate = await showDatePicker(
+              context: context,
+              initialDate: DateTime.now(),
+              firstDate: DateTime.now(),
+              lastDate: DateTime.now().add(
+                const Duration(days: 365 * 100),
+              ),
+            );
+            onDateChanged(selectedDate);
+          },
+          child: Text(selectedDateFormatted ?? 'Wybierz datę wykonania celu'),
+        )
       ],
     );
   }

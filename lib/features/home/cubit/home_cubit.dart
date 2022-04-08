@@ -6,47 +6,26 @@ import 'package:flutter/material.dart';
 part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  HomeCubit()
-      : super(
-          const HomeState(
-            documents: [],
-            errorMessage: '',
-            isLoading: false,
-          ),
-        );
-
+  HomeCubit() : super(const HomeState());
   StreamSubscription? _streamSubscription;
 
   Future<void> start() async {
-    emit(
-      const HomeState(
-        documents: [],
-        errorMessage: '',
-        isLoading: true,
-      ),
-    );
-
-    _streamSubscription = FirebaseFirestore.instance
-        .collection('goal')
-        .snapshots()
-        .listen((data) {
-      emit(
-        HomeState(
-          documents: data.docs,
-          isLoading: false,
-          errorMessage: '',
-        ),
-      );
-    })
-      ..onError((error) {
+    _streamSubscription =
+        FirebaseFirestore.instance.collection('goal').snapshots().listen(
+      (goalslist) {
         emit(
-          HomeState(
-            documents: const [],
-            isLoading: false,
-            errorMessage: error.toString(),
-          ),
+          HomeState(goalslist: goalslist),
         );
-      });
+      },
+    )..onError(
+            (error) {
+              emit(
+                const HomeState(
+                  loadingErrorOccured: true,
+                ),
+              );
+            },
+          );
   }
 
   Future<void> remove({required String documentID}) async {
@@ -57,11 +36,7 @@ class HomeCubit extends Cubit<HomeState> {
           .delete();
     } catch (error) {
       emit(
-        HomeState(
-          documents: const [],
-          isLoading: false,
-          errorMessage: error.toString(),
-        ),
+        const HomeState(loadingErrorOccured: true),
       );
       start();
     }
@@ -73,4 +48,3 @@ class HomeCubit extends Cubit<HomeState> {
     return super.close();
   }
 }
-
