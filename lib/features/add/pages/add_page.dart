@@ -16,7 +16,7 @@ class _AddPageState extends State<AddPage> {
   String? _title;
   String? _aim;
   String? _imageURL;
-  DateTime? _releaseDate;
+  DateTime? _endDate;
 
   @override
   Widget build(BuildContext context) {
@@ -60,11 +60,11 @@ class _AddPageState extends State<AddPage> {
                       onPressed: _title == null ||
                               _aim == null ||
                               _imageURL == null ||
-                              _releaseDate == null
+                              _endDate == null
                           ? null
                           : () {
                               context.read<AddCubit>().add(
-                                  _title!, _aim!, _imageURL!, _releaseDate!);
+                                  _title!, _aim!, _imageURL!, _endDate!);
                             },
                       icon: const Icon(Icons.check))
                 ],
@@ -94,11 +94,11 @@ class _AddPageState extends State<AddPage> {
                   onDateChanged: (newValue) {
                     setState(
                       () {
-                        _releaseDate = newValue;
+                        _endDate = newValue;
                       },
                     );
                   },
-                  selectedDateFormatted: _releaseDate?.toIso8601String()),
+                  selectedDateFormatted: _endDate?.toIso8601String()),
             );
           },
         ),

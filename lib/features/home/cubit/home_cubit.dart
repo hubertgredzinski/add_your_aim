@@ -11,15 +11,19 @@ class HomeCubit extends Cubit<HomeState> {
   StreamSubscription? _streamSubscription;
 
   Future<void> start() async {
-    _streamSubscription =
-        FirebaseFirestore.instance.collection('goal').snapshots().listen(
+    _streamSubscription = FirebaseFirestore.instance
+        .collection('goal')
+        .orderBy('end_date')
+        .snapshots()
+        .listen(
       (goalslist) {
         final itemModels = goalslist.docs.map((doc) {
           return ItemModel(
+            id: doc.id,
             title: doc['title'],
             imageURL: doc['image_url'],
             aim: doc['aim'],
-            releaseDate: doc['release_date'],
+            endDate: (doc['end_date'] as Timestamp).toDate(),
           );
         }).toList();
         emit(
@@ -27,14 +31,14 @@ class HomeCubit extends Cubit<HomeState> {
         );
       },
     )..onError(
-            (error) {
-              emit(
-                const HomeState(
-                  loadingErrorOccured: true,
-                ),
-              );
-            },
+        (error) {
+          emit(
+            const HomeState(
+              loadingErrorOccured: true,
+            ),
           );
+        },
+      );
   }
 
   Future<void> remove({required String documentID}) async {

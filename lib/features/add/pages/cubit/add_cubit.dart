@@ -13,7 +13,7 @@ class AddCubit extends Cubit<AddState> {
     String title,
     String aim,
     String imageURL,
-    DateTime releaseDate,
+    DateTime endDate,
   ) async {
     try {
       await FirebaseFirestore.instance.collection('goal').add(
@@ -21,14 +21,18 @@ class AddCubit extends Cubit<AddState> {
           'title': title,
           'aim': aim,
           'image_url': imageURL,
-          'release_date': releaseDate,
+          'end_date': endDate,
         },
       );
       emit(
         const AddState(saved: true),
       );
     } catch (error) {
-      emit(AddState(errorMessage: error.toString(),),);
+      emit(
+        AddState(
+          errorMessage: error.toString(),
+        ),
+      );
     }
   }
 }

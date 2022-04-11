@@ -1,10 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moja_apka/features/add/pages/add_page.dart';
 import 'package:moja_apka/features/auth/pages/user_profile.dart';
 import 'package:moja_apka/features/home/cubit/home_cubit.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:moja_apka/model/item_model.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({
@@ -47,16 +47,13 @@ class HomePage extends StatelessWidget {
         create: (context) => HomeCubit()..start(),
         child: BlocBuilder<HomeCubit, HomeState>(
           builder: (context, state) {
-            final docs = state.goalslist;
-            if (docs.isEmpty) {
-              return const SizedBox.shrink();
-            }
+            final itemModels = state.goalslist;
             return ListView(
               padding: const EdgeInsets.symmetric(vertical: 10),
               children: [
-                for (final doc in docs) ...[
+                for (final itemModel in itemModels)
                   Dismissible(
-                    key: ValueKey(doc.id),
+                    key: ValueKey(itemModel.id),
                     background: const DecoratedBox(
                       decoration: BoxDecoration(color: Colors.red),
                       child: Align(
@@ -71,13 +68,14 @@ class HomePage extends StatelessWidget {
                       return direction == DismissDirection.endToStart;
                     },
                     onDismissed: (direction) {
-                      context.read<HomeCubit>().remove(documentID: doc.id);
+                      context
+                          .read<HomeCubit>()
+                          .remove(documentID: itemModel.id);
                     },
                     child: AimCategory(
-                      document: doc,
+                      itemModel: itemModel,
                     ),
                   ),
-                ],
               ],
             );
           },
@@ -89,11 +87,11 @@ class HomePage extends StatelessWidget {
 
 class AimCategory extends StatelessWidget {
   const AimCategory({
-    required this.document,
     Key? key,
+    required this.itemModel,
   }) : super(key: key);
 
-  final QueryDocumentSnapshot<Map<String, dynamic>> document;
+  final ItemModel itemModel;
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +107,7 @@ class AimCategory extends StatelessWidget {
               margin: const EdgeInsets.all(5),
               padding: const EdgeInsets.all(5),
               child: Text(
-                document['title'],
+                itemModel.title,
                 style:
                     GoogleFonts.lato(fontSize: 20, fontWeight: FontWeight.bold),
               ),
@@ -120,7 +118,7 @@ class AimCategory extends StatelessWidget {
                 color: Colors.black12,
                 image: DecorationImage(
                   image: NetworkImage(
-                    document['image_url'],
+                    itemModel.imageURL,
                   ),
                   fit: BoxFit.cover,
                 ),
@@ -177,7 +175,7 @@ class AimCategory extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(2),
               child: Text(
-                (document['release_date'] as Timestamp).toDate().toString(),
+                itemModel.endDate.toString(),
                 style: GoogleFonts.lato(
                   fontSize: 15,
                 ),
