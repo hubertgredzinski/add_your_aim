@@ -3,6 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
+import 'package:moja_apka/model/item_model.dart';
 part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
@@ -13,8 +14,16 @@ class HomeCubit extends Cubit<HomeState> {
     _streamSubscription =
         FirebaseFirestore.instance.collection('goal').snapshots().listen(
       (goalslist) {
+        final itemModels = goalslist.docs.map((doc) {
+          return ItemModel(
+            title: doc['title'],
+            imageURL: doc['image_url'],
+            aim: doc['aim'],
+            releaseDate: doc['release_date'],
+          );
+        }).toList();
         emit(
-          HomeState(goalslist: goalslist),
+          HomeState(goalslist: itemModels),
         );
       },
     )..onError(

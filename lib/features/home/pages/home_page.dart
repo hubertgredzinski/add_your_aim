@@ -47,8 +47,8 @@ class HomePage extends StatelessWidget {
         create: (context) => HomeCubit()..start(),
         child: BlocBuilder<HomeCubit, HomeState>(
           builder: (context, state) {
-            final docs = state.goalslist?.docs;
-            if (docs == null) {
+            final docs = state.goalslist;
+            if (docs.isEmpty) {
               return const SizedBox.shrink();
             }
             return ListView(
