@@ -28,7 +28,7 @@ class AddCubit extends Cubit<AddState> {
         const AddState(saved: true),
       );
     } catch (error) {
-      AddState(errorMessage: error.toString());
+      emit(AddState(errorMessage: error.toString()));
     }
   }
 }

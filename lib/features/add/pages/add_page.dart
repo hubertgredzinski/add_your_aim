@@ -27,16 +27,29 @@ class _AddPageState extends State<AddPage> {
           if (state.saved) {
             Navigator.of(context).pop();
           }
+          if (state.errorMessage.isNotEmpty) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Row(
+                  children: [
+                    const Icon(
+                      Icons.info_outline,
+                      color: Colors.white,
+                    ),
+                    Expanded(
+                      child:
+                          Text(state.errorMessage, textAlign: TextAlign.center),
+                    ),
+                  ],
+                ),
+                backgroundColor: Colors.red,
+                duration: const Duration(seconds: 3),
+              ),
+            );
+          }
         },
         child: BlocBuilder<AddCubit, AddState>(
           builder: (context, state) {
-            if (state.errorMessage.isNotEmpty) {
-              return Center(
-                child: Text(
-                  'Wystąpił błąd : ${state.errorMessage}',
-                ),
-              );
-            }
             return Scaffold(
               appBar: AppBar(
                 title: const Center(
