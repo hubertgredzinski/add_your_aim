@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:moja_apka/features/aims/pages/cubit/aims_cubit.dart';
-import 'package:moja_apka/features/aims/pages/cubit/aims_state.dart';
+import 'package:moja_apka/features/add/pages/cubit/add_cubit.dart';
+import 'package:moja_apka/features/add/pages/cubit/add_state.dart';
 
-class AimsPage extends StatefulWidget {
-  const AimsPage({
+class AddPage extends StatefulWidget {
+  const AddPage({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<AimsPage> createState() => _AimsPageState();
+  State<AddPage> createState() => _AddPageState();
 }
 
-class _AimsPageState extends State<AimsPage> {
+class _AddPageState extends State<AddPage> {
   String? _title;
   String? _aim;
   String? _imageURL;
@@ -21,80 +21,81 @@ class _AimsPageState extends State<AimsPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AimsCubit(),
-      child: BlocBuilder<AimsCubit, AimsState>(
-        builder: (context, state) {
-          if (state.errorMessage.isNotEmpty) {
-            return Center(
-              child: Text('Wystąpił błąd : ${state.errorMessage}'),
-            );
+      create: (context) => AddCubit(),
+      child: BlocListener<AddCubit, AddState>(
+        listener: (context, state) {
+          if (state.saved) {
+            Navigator.of(context).pop();
           }
-
-          if (state.isLoading) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-
-          return Scaffold(
-            appBar: AppBar(
-              title: const Center(
-                child: Text('Dodaj cel'),
-              ),
-              actions: [
-                IconButton(
-                    onPressed: _title == null ||
-                            _aim == null ||
-                            _imageURL == null ||
-                            _releaseDate == null
-                        ? null
-                        : () {
-                            context
-                                .read<AimsCubit>()
-                                .add(_title!, _aim!, _imageURL!, _releaseDate!);
-                          },
-                    icon: const Icon(Icons.check))
-              ],
-            ),
-            body: _AimsPageBody(
-                onTitleChanged: (newValue) {
-                  setState(
-                    () {
-                      _title = newValue;
-                    },
-                  );
-                },
-                onAimChanged: (newValue) {
-                  setState(
-                    () {
-                      _aim = newValue;
-                    },
-                  );
-                },
-                onImageUrlChanged: (newValue) {
-                  setState(
-                    () {
-                      _imageURL = newValue;
-                    },
-                  );
-                },
-                onDateChanged: (newValue) {
-                  setState(
-                    () {
-                      _releaseDate = newValue;
-                    },
-                  );
-                },
-                selectedDateFormatted: _releaseDate?.toIso8601String()),
-          );
         },
+        child: BlocBuilder<AddCubit, AddState>(
+          builder: (context, state) {
+            if (state.errorMessage.isNotEmpty) {
+              return Center(
+                child: Text(
+                  'Wystąpił błąd : ${state.errorMessage}',
+                ),
+              );
+            }
+            return Scaffold(
+              appBar: AppBar(
+                title: const Center(
+                  child: Text('Dodaj cel'),
+                ),
+                actions: [
+                  IconButton(
+                      onPressed: _title == null ||
+                              _aim == null ||
+                              _imageURL == null ||
+                              _releaseDate == null
+                          ? null
+                          : () {
+                              context.read<AddCubit>().add(
+                                  _title!, _aim!, _imageURL!, _releaseDate!);
+                            },
+                      icon: const Icon(Icons.check))
+                ],
+              ),
+              body: _AddPageBody(
+                  onTitleChanged: (newValue) {
+                    setState(
+                      () {
+                        _title = newValue;
+                      },
+                    );
+                  },
+                  onAimChanged: (newValue) {
+                    setState(
+                      () {
+                        _aim = newValue;
+                      },
+                    );
+                  },
+                  onImageUrlChanged: (newValue) {
+                    setState(
+                      () {
+                        _imageURL = newValue;
+                      },
+                    );
+                  },
+                  onDateChanged: (newValue) {
+                    setState(
+                      () {
+                        _releaseDate = newValue;
+                      },
+                    );
+                  },
+                  selectedDateFormatted: _releaseDate?.toIso8601String()),
+            );
+          },
+        ),
       ),
     );
   }
 }
 
-class _AimsPageBody extends StatelessWidget {
-  const _AimsPageBody(
+class _AddPageBody extends StatelessWidget {
+  const _AddPageBody(
       {Key? key,
       required this.onTitleChanged,
       required this.onAimChanged,
