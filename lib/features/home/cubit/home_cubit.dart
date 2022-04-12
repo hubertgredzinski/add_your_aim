@@ -1,33 +1,23 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
 import 'package:moja_apka/model/item_model.dart';
+import 'package:moja_apka/repositories/item_repository.dart';
 part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  HomeCubit() : super(const HomeState());
+  HomeCubit(this._itemsRepository) : super(const HomeState());
+
+  final ItemsRepository _itemsRepository;
+
   StreamSubscription? _streamSubscription;
 
   Future<void> start() async {
-    _streamSubscription = FirebaseFirestore.instance
-        .collection('goal')
-        .orderBy('end_date')
-        .snapshots()
-        .listen(
+    _streamSubscription = _itemsRepository.getItemsStream().listen(
       (goalslist) {
-        final itemModels = goalslist.docs.map((doc) {
-          return ItemModel(
-            id: doc.id,
-            title: doc['title'],
-            imageURL: doc['image_url'],
-            aim: doc['aim'],
-            endDate: (doc['end_date'] as Timestamp).toDate(),
-          );
-        }).toList();
         emit(
-          HomeState(goalslist: itemModels),
+          HomeState(goalslist: goalslist),
         );
       },
     )..onError(
@@ -43,10 +33,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   Future<void> remove({required String documentID}) async {
     try {
-      await FirebaseFirestore.instance
-          .collection('goal')
-          .doc(documentID)
-          .delete();
+      await _itemsRepository.remove(id: documentID);
     } catch (error) {
       emit(
         const HomeState(loadingErrorOccured: true),

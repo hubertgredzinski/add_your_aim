@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moja_apka/features/add/pages/cubit/add_cubit.dart';
 import 'package:moja_apka/features/add/pages/cubit/add_state.dart';
+import 'package:moja_apka/repositories/item_repository.dart';
 
 class AddPage extends StatefulWidget {
   const AddPage({
@@ -21,7 +22,7 @@ class _AddPageState extends State<AddPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AddCubit(),
+      create: (context) => AddCubit(ItemsRepository()),
       child: BlocListener<AddCubit, AddState>(
         listener: (context, state) {
           if (state.saved) {
@@ -57,16 +58,18 @@ class _AddPageState extends State<AddPage> {
                 ),
                 actions: [
                   IconButton(
-                      onPressed: _title == null ||
-                              _aim == null ||
-                              _imageURL == null ||
-                              _endDate == null
-                          ? null
-                          : () {
-                              context.read<AddCubit>().add(
-                                  _title!, _aim!, _imageURL!, _endDate!);
-                            },
-                      icon: const Icon(Icons.check))
+                    onPressed: _title == null ||
+                            _aim == null ||
+                            _imageURL == null ||
+                            _endDate == null
+                        ? null
+                        : () {
+                            context
+                                .read<AddCubit>()
+                                .add(_title!, _aim!, _imageURL!, _endDate!);
+                          },
+                    icon: const Icon(Icons.check),
+                  )
                 ],
               ),
               body: _AddPageBody(

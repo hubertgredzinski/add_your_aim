@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moja_apka/features/add/pages/add_page.dart';
+import 'package:moja_apka/features/add_distance/pages/add_distance.dart';
 import 'package:moja_apka/features/auth/pages/user_profile.dart';
 import 'package:moja_apka/features/home/cubit/home_cubit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:moja_apka/model/item_model.dart';
+import 'package:moja_apka/repositories/item_repository.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({
@@ -44,7 +46,7 @@ class HomePage extends StatelessWidget {
         child: const Icon(Icons.add),
       ),
       body: BlocProvider(
-        create: (context) => HomeCubit()..start(),
+        create: (context) => HomeCubit(ItemsRepository())..start(),
         child: BlocBuilder<HomeCubit, HomeState>(
           builder: (context, state) {
             final itemModels = state.goalslist;
@@ -149,6 +151,15 @@ class AimCategory extends StatelessWidget {
                     ],
                   ),
                 ),
+                IconButton(
+                  onPressed: () {Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const AddDistance(),
+                ),
+              );},
+                  iconSize: 25,
+                  icon: const Icon(Icons.edit),
+                ),
                 Container(
                   decoration: const BoxDecoration(
                     color: Color.fromARGB(255, 143, 255, 152),
@@ -158,7 +169,7 @@ class AimCategory extends StatelessWidget {
                   child: Column(
                     children: [
                       Text(
-                        '0',
+                        itemModel.daysLeft(),
                         style: GoogleFonts.lato(
                             fontSize: 20, fontWeight: FontWeight.bold),
                       ),
