@@ -8,6 +8,7 @@ class ItemsRepository {
     if (userID == null) {
       throw Exception('User is not logged in');
     }
+
     return FirebaseFirestore.instance
         .collection('users')
         .doc(userID)
@@ -37,8 +38,8 @@ class ItemsRepository {
       throw Exception('User is not logged in');
     }
     return FirebaseFirestore.instance
-        .collection(userID)
-        .doc('51LlJXCACTa1hR79AZaZCc1kvo02')
+        .collection('users')
+        .doc(userID)
         .collection('items')
         .doc(id)
         .delete();
@@ -55,8 +56,8 @@ class ItemsRepository {
       throw Exception('User is not logged in');
     }
     await FirebaseFirestore.instance
-        .collection(userID)
-        .doc('51LlJXCACTa1hR79AZaZCc1kvo02')
+        .collection('users')
+        .doc(userID)
         .collection('items')
         .add(
       {
