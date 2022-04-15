@@ -1,10 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:moja_apka/model/item_model.dart';
 
 class ItemsRepository {
   Stream<List<ItemModel>> getItemsStream() {
+    final userID = FirebaseAuth.instance.currentUser?.uid;
+    if (userID == null) {
+      throw Exception('User is not logged in');
+    }
     return FirebaseFirestore.instance
-        .collection('goal')
+        .collection('users')
+        .doc(userID)
+        .collection('items')
         .orderBy('end_date')
         .snapshots()
         .map(
@@ -25,7 +32,16 @@ class ItemsRepository {
   }
 
   Future<void> remove({required String id}) {
-    return FirebaseFirestore.instance.collection('goal').doc(id).delete();
+    final userID = FirebaseAuth.instance.currentUser?.uid;
+    if (userID == null) {
+      throw Exception('User is not logged in');
+    }
+    return FirebaseFirestore.instance
+        .collection(userID)
+        .doc('51LlJXCACTa1hR79AZaZCc1kvo02')
+        .collection('items')
+        .doc(id)
+        .delete();
   }
 
   Future<void> add(
@@ -34,7 +50,15 @@ class ItemsRepository {
     String imageURL,
     DateTime endDate,
   ) async {
-    await FirebaseFirestore.instance.collection('goal').add(
+    final userID = FirebaseAuth.instance.currentUser?.uid;
+    if (userID == null) {
+      throw Exception('User is not logged in');
+    }
+    await FirebaseFirestore.instance
+        .collection(userID)
+        .doc('51LlJXCACTa1hR79AZaZCc1kvo02')
+        .collection('items')
+        .add(
       {
         'title': title,
         'aim': aim,
