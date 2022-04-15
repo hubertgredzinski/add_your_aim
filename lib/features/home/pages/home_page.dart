@@ -152,11 +152,13 @@ class AimCategory extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  onPressed: () {Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const AddDistance(),
-                ),
-              );},
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const AddDistance(),
+                      ),
+                    );
+                  },
                   iconSize: 25,
                   icon: const Icon(Icons.edit),
                 ),
@@ -186,7 +188,7 @@ class AimCategory extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(2),
               child: Text(
-                itemModel.endDate.toString(),
+                itemModel.endDateFormatted(),
                 style: GoogleFonts.lato(
                   fontSize: 15,
                 ),

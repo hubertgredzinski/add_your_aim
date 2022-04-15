@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:moja_apka/features/add/pages/cubit/add_cubit.dart';
 import 'package:moja_apka/features/add/pages/cubit/add_state.dart';
 import 'package:moja_apka/repositories/item_repository.dart';
@@ -73,35 +74,38 @@ class _AddPageState extends State<AddPage> {
                 ],
               ),
               body: _AddPageBody(
-                  onTitleChanged: (newValue) {
-                    setState(
-                      () {
-                        _title = newValue;
-                      },
-                    );
-                  },
-                  onAimChanged: (newValue) {
-                    setState(
-                      () {
-                        _aim = newValue;
-                      },
-                    );
-                  },
-                  onImageUrlChanged: (newValue) {
-                    setState(
-                      () {
-                        _imageURL = newValue;
-                      },
-                    );
-                  },
-                  onDateChanged: (newValue) {
-                    setState(
-                      () {
-                        _endDate = newValue;
-                      },
-                    );
-                  },
-                  selectedDateFormatted: _endDate?.toIso8601String()),
+                onTitleChanged: (newValue) {
+                  setState(
+                    () {
+                      _title = newValue;
+                    },
+                  );
+                },
+                onAimChanged: (newValue) {
+                  setState(
+                    () {
+                      _aim = newValue;
+                    },
+                  );
+                },
+                onImageUrlChanged: (newValue) {
+                  setState(
+                    () {
+                      _imageURL = newValue;
+                    },
+                  );
+                },
+                onDateChanged: (newValue) {
+                  setState(
+                    () {
+                      _endDate = newValue;
+                    },
+                  );
+                },
+                selectedDateFormatted: _endDate == null
+                    ? null
+                    : DateFormat.yMMMMEEEEd().format(_endDate!),
+              ),
             );
           },
         ),
