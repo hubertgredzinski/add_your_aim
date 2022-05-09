@@ -2,7 +2,7 @@ part of 'home_cubit.dart';
 
 @immutable
 class HomeState {
-  final List<ItemModel> goalslist;
+  final List<GoalModel> goalslist;
   final bool loadingErrorOccured;
   final bool removingErroroccured;
 

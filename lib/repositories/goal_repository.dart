@@ -1,14 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:moja_apka/model/item_model.dart';
+import 'package:moja_apka/model/goal_model.dart';
 
-class ItemsRepository {
-  Stream<List<ItemModel>> getItemsStream() {
+class GoalRepository {
+  Stream<List<GoalModel>> getGoalsStream() {
     final userID = FirebaseAuth.instance.currentUser?.uid;
     if (userID == null) {
       throw Exception('User is not logged in');
     }
-
     return FirebaseFirestore.instance
         .collection('users')
         .doc(userID)
@@ -19,11 +18,11 @@ class ItemsRepository {
       (querySnapshot) {
         return querySnapshot.docs.map(
           (doc) {
-            return ItemModel(
+            return GoalModel(
               id: doc.id,
               title: doc['title'],
               imageURL: doc['image_url'],
-              aim: doc['aim'],
+              goal: doc['goal'],
               endDate: (doc['end_date'] as Timestamp).toDate(),
             );
           },
@@ -47,7 +46,7 @@ class ItemsRepository {
 
   Future<void> add(
     String title,
-    String aim,
+    String goal,
     String imageURL,
     DateTime endDate,
   ) async {
@@ -62,7 +61,7 @@ class ItemsRepository {
         .add(
       {
         'title': title,
-        'aim': aim,
+        'goal': goal,
         'image_url': imageURL,
         'end_date': endDate,
       },

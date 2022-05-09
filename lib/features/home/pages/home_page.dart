@@ -5,8 +5,8 @@ import 'package:moja_apka/features/add_distance/pages/add_distance.dart';
 import 'package:moja_apka/features/auth/pages/user_profile.dart';
 import 'package:moja_apka/features/home/cubit/home_cubit.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:moja_apka/model/item_model.dart';
-import 'package:moja_apka/repositories/item_repository.dart';
+import 'package:moja_apka/model/goal_model.dart';
+import 'package:moja_apka/repositories/goal_repository.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({
@@ -46,16 +46,16 @@ class HomePage extends StatelessWidget {
         child: const Icon(Icons.add),
       ),
       body: BlocProvider(
-        create: (context) => HomeCubit(ItemsRepository())..start(),
+        create: (context) => HomeCubit(GoalRepository())..start(),
         child: BlocBuilder<HomeCubit, HomeState>(
           builder: (context, state) {
-            final itemModels = state.goalslist;
+            final goalsModel = state.goalslist;
             return ListView(
               padding: const EdgeInsets.symmetric(vertical: 10),
               children: [
-                for (final itemModel in itemModels)
+                for (final goalModel in goalsModel)
                   Dismissible(
-                    key: ValueKey(itemModel.id),
+                    key: ValueKey(goalModel.id),
                     background: const DecoratedBox(
                       decoration: BoxDecoration(color: Colors.red),
                       child: Align(
@@ -72,10 +72,10 @@ class HomePage extends StatelessWidget {
                     onDismissed: (direction) {
                       context
                           .read<HomeCubit>()
-                          .remove(documentID: itemModel.id);
+                          .remove(documentID: goalModel.id);
                     },
                     child: AimCategory(
-                      itemModel: itemModel,
+                      goalModel: goalModel,
                     ),
                   ),
               ],
@@ -90,10 +90,10 @@ class HomePage extends StatelessWidget {
 class AimCategory extends StatelessWidget {
   const AimCategory({
     Key? key,
-    required this.itemModel,
+    required this.goalModel,
   }) : super(key: key);
 
-  final ItemModel itemModel;
+  final GoalModel goalModel;
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +109,7 @@ class AimCategory extends StatelessWidget {
               margin: const EdgeInsets.all(5),
               padding: const EdgeInsets.all(5),
               child: Text(
-                itemModel.title,
+                goalModel.title,
                 style:
                     GoogleFonts.lato(fontSize: 20, fontWeight: FontWeight.bold),
               ),
@@ -120,7 +120,7 @@ class AimCategory extends StatelessWidget {
                 color: Colors.black12,
                 image: DecorationImage(
                   image: NetworkImage(
-                    itemModel.imageURL,
+                    goalModel.imageURL,
                   ),
                   fit: BoxFit.cover,
                 ),
@@ -143,10 +143,29 @@ class AimCategory extends StatelessWidget {
                             fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 5),
-                      Text(
-                        '0 / 20 km',
-                        style: GoogleFonts.lato(
-                            fontSize: 15, fontWeight: FontWeight.bold),
+                      Row(
+                        children: [
+                          Text(
+                            '0',
+                            style: GoogleFonts.lato(
+                                fontSize: 15, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            '/',
+                            style: GoogleFonts.lato(
+                                fontSize: 15, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            goalModel.goal,
+                            style: GoogleFonts.lato(
+                                fontSize: 15, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            ' km',
+                            style: GoogleFonts.lato(
+                                fontSize: 15, fontWeight: FontWeight.bold),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -171,7 +190,7 @@ class AimCategory extends StatelessWidget {
                   child: Column(
                     children: [
                       Text(
-                        itemModel.daysLeft(),
+                        goalModel.daysLeft(),
                         style: GoogleFonts.lato(
                             fontSize: 20, fontWeight: FontWeight.bold),
                       ),
@@ -188,7 +207,7 @@ class AimCategory extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(2),
               child: Text(
-                itemModel.endDateFormatted(),
+                goalModel.endDateFormatted(),
                 style: GoogleFonts.lato(
                   fontSize: 15,
                 ),

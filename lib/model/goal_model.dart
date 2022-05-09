@@ -1,16 +1,16 @@
 import 'package:intl/intl.dart';
 
-class ItemModel {
-  ItemModel(
+class GoalModel {
+  GoalModel(
       {required this.id,
       required this.title,
       required this.imageURL,
-      required this.aim,
+      required this.goal,
       required this.endDate});
   final String id;
   final String title;
   final String imageURL;
-  final String aim;
+  final String goal;
   final DateTime endDate;
 
   String daysLeft() {

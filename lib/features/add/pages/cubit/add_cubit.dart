@@ -1,23 +1,23 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:moja_apka/repositories/item_repository.dart';
+import 'package:moja_apka/repositories/goal_repository.dart';
 import 'add_state.dart';
 
 class AddCubit extends Cubit<AddState> {
-  AddCubit(this._itemsRepository)
+  AddCubit(this._goalRepository)
       : super(
           const AddState(),
         );
-  final ItemsRepository _itemsRepository;
+  final GoalRepository _goalRepository;
 
   Future<void> add(
     String title,
-    String aim,
+    String goal,
     String imageURL,
     DateTime endDate,
   ) async {
     try {
-      await _itemsRepository.add(title, aim, imageURL, endDate);
+      await _goalRepository.add(title, goal, imageURL, endDate);
       emit(
         const AddState(saved: true),
       );

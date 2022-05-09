@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:moja_apka/features/add/pages/cubit/add_cubit.dart';
 import 'package:moja_apka/features/add/pages/cubit/add_state.dart';
-import 'package:moja_apka/repositories/item_repository.dart';
+import 'package:moja_apka/repositories/goal_repository.dart';
 
 class AddPage extends StatefulWidget {
   const AddPage({
@@ -16,14 +16,14 @@ class AddPage extends StatefulWidget {
 
 class _AddPageState extends State<AddPage> {
   String? _title;
-  String? _aim;
+  String? _goal;
   String? _imageURL;
   DateTime? _endDate;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AddCubit(ItemsRepository()),
+      create: (context) => AddCubit(GoalRepository()),
       child: BlocListener<AddCubit, AddState>(
         listener: (context, state) {
           if (state.saved) {
@@ -60,14 +60,14 @@ class _AddPageState extends State<AddPage> {
                 actions: [
                   IconButton(
                     onPressed: _title == null ||
-                            _aim == null ||
+                            _goal == null ||
                             _imageURL == null ||
                             _endDate == null
                         ? null
                         : () {
                             context
                                 .read<AddCubit>()
-                                .add(_title!, _aim!, _imageURL!, _endDate!);
+                                .add(_title!, _goal!, _imageURL!, _endDate!);
                           },
                     icon: const Icon(Icons.check),
                   )
@@ -81,10 +81,10 @@ class _AddPageState extends State<AddPage> {
                     },
                   );
                 },
-                onAimChanged: (newValue) {
+                onGoalChanged: (newValue) {
                   setState(
                     () {
-                      _aim = newValue;
+                      _goal = newValue;
                     },
                   );
                 },
@@ -118,14 +118,14 @@ class _AddPageBody extends StatelessWidget {
   const _AddPageBody(
       {Key? key,
       required this.onTitleChanged,
-      required this.onAimChanged,
+      required this.onGoalChanged,
       required this.onImageUrlChanged,
       required this.onDateChanged,
       this.selectedDateFormatted})
       : super(key: key);
 
   final Function(String) onTitleChanged;
-  final Function(String) onAimChanged;
+  final Function(String) onGoalChanged;
   final Function(String) onImageUrlChanged;
   final Function(DateTime?) onDateChanged;
   final String? selectedDateFormatted;
@@ -160,7 +160,7 @@ class _AddPageBody extends StatelessWidget {
               borderSide: BorderSide(color: Colors.green, width: 2),
             ),
           ),
-          onChanged: onAimChanged,
+          onChanged: onGoalChanged,
         ),
         const SizedBox(height: 20),
         TextField(

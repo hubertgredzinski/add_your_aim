@@ -2,19 +2,19 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
-import 'package:moja_apka/model/item_model.dart';
-import 'package:moja_apka/repositories/item_repository.dart';
+import 'package:moja_apka/model/goal_model.dart';
+import 'package:moja_apka/repositories/goal_repository.dart';
 part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  HomeCubit(this._itemsRepository) : super(const HomeState());
+  HomeCubit(this._goalRepository) : super(const HomeState());
 
-  final ItemsRepository _itemsRepository;
+  final GoalRepository _goalRepository;
 
   StreamSubscription? _streamSubscription;
 
   Future<void> start() async {
-    _streamSubscription = _itemsRepository.getItemsStream().listen(
+    _streamSubscription = _goalRepository.getGoalsStream().listen(
       (goalslist) {
         emit(
           HomeState(goalslist: goalslist),
@@ -33,7 +33,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   Future<void> remove({required String documentID}) async {
     try {
-      await _itemsRepository.remove(id: documentID);
+      await _goalRepository.remove(id: documentID);
     } catch (error) {
       emit(
         const HomeState(loadingErrorOccured: true),
