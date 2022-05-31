@@ -1,16 +1,10 @@
-# moja_apka
+App is creating.
 
-A new Flutter project.
+In my app you could add your sport goal which has title, for example your aim is running, you can add the day when u want to achieve your goal and u can set your aim for example you want to run 50 km in two weeksor you wanna run in one week 60 minutes, it is up to you. Also you can add the image of your goal.
+Soon I want to add aim history, place when you can add your aim when you finish it and the temperature in your city, if you will run outside you will know which clothes wear.
 
-## Getting Started
+How is it looking? Below I add some screenshots. :)
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![apka 1](https://user-images.githubusercontent.com/100992112/171197587-d1ca15ac-e759-4537-bbaa-8297b4062c05.jpg)
+![apka 2](https://user-images.githubusercontent.com/100992112/171197630-a04502a7-a070-401a-a7b0-cab66b21ec69.png)
