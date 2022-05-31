@@ -65,9 +65,12 @@ class _AddPageState extends State<AddPage> {
                             _endDate == null
                         ? null
                         : () {
-                            context
-                                .read<AddCubit>()
-                                .add(_title!, _goal!, _imageURL!, _endDate!);
+                            context.read<AddCubit>().add(
+                                  _title!,
+                                  _goal!,
+                                  _imageURL!,
+                                  _endDate!,
+                                );
                           },
                     icon: const Icon(Icons.check),
                   )
@@ -123,7 +126,6 @@ class _AddPageBody extends StatelessWidget {
       required this.onDateChanged,
       this.selectedDateFormatted})
       : super(key: key);
-
   final Function(String) onTitleChanged;
   final Function(String) onGoalChanged;
   final Function(String) onImageUrlChanged;

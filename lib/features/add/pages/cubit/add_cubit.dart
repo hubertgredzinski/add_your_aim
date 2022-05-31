@@ -14,10 +14,10 @@ class AddCubit extends Cubit<AddState> {
     String title,
     String goal,
     String imageURL,
-    DateTime endDate,
-  ) async {
+    DateTime endDate, 
+  )  async {
     try {
-      await _goalRepository.add(title, goal, imageURL, endDate);
+      await _goalRepository.add(title, goal, imageURL, endDate );
       emit(
         const AddState(saved: true),
       );
