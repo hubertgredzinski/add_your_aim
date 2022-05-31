@@ -20,7 +20,18 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: const AuthGate(),
+      home: const RootPage(),
     );
+  }
+}
+
+class RootPage extends StatelessWidget {
+  const RootPage({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const AuthGate();
   }
 }
