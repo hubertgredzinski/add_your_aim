@@ -23,6 +23,7 @@ class GoalRepository {
               title: doc['title'],
               imageURL: doc['image_url'],
               goal: doc['goal'],
+              unit: doc['unit'],
               endDate: (doc['end_date'] as Timestamp).toDate(),
             );
           },
@@ -47,6 +48,7 @@ class GoalRepository {
   Future<void> add(
     String title,
     String goal,
+    String unit,
     String imageURL,
     DateTime endDate,
   ) async {
@@ -62,6 +64,7 @@ class GoalRepository {
       {
         'title': title,
         'goal': goal,
+        'unit': unit,
         'image_url': imageURL,
         'end_date': endDate,
       },
