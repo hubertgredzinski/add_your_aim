@@ -65,7 +65,7 @@ class _HomePageState extends State<HomePage> {
       }),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.white54,
-        iconSize: 25,
+        iconSize: 27,
         currentIndex: currentIndex,
         onTap: (index) {
           setState(() {
@@ -74,11 +74,11 @@ class _HomePageState extends State<HomePage> {
         },
         items: const [
           BottomNavigationBarItem(
-              icon: Icon(Icons.home),
+              icon: Icon(Icons.list_alt),
               label: 'Cele',
               backgroundColor: Colors.green),
           BottomNavigationBarItem(
-              icon: Icon(Icons.favorite),
+              icon: Icon(Icons.sunny),
               label: 'Pogoda',
               backgroundColor: Colors.green)
         ],
