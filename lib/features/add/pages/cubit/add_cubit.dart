@@ -13,11 +13,12 @@ class AddCubit extends Cubit<AddState> {
   Future<void> add(
     String title,
     String goal,
+    String unit,
     String imageURL,
     DateTime endDate,
   ) async {
     try {
-      await _goalRepository.add(title, goal, imageURL, endDate);
+      await _goalRepository.add(title, goal, unit, imageURL, endDate);
       emit(
         const AddState(saved: true),
       );

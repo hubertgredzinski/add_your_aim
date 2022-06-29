@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moja_apka/features/add/pages/add_page.dart';
-import 'package:moja_apka/features/add_distance/pages/add_distance.dart';
 import 'package:moja_apka/features/auth/pages/user_profile.dart';
 import 'package:moja_apka/features/home/cubit/home_cubit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -146,22 +145,12 @@ class AimCategory extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            '0',
-                            style: GoogleFonts.lato(
-                                fontSize: 15, fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            '/',
-                            style: GoogleFonts.lato(
-                                fontSize: 15, fontWeight: FontWeight.bold),
-                          ),
-                          Text(
                             goalModel.goal,
                             style: GoogleFonts.lato(
                                 fontSize: 15, fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            ' km',
+                            goalModel.unit,
                             style: GoogleFonts.lato(
                                 fontSize: 15, fontWeight: FontWeight.bold),
                           ),
@@ -169,17 +158,6 @@ class AimCategory extends StatelessWidget {
                       ),
                     ],
                   ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const AddDistance(),
-                      ),
-                    );
-                  },
-                  iconSize: 25,
-                  icon: const Icon(Icons.edit),
                 ),
                 Container(
                   decoration: const BoxDecoration(

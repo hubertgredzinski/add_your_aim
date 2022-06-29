@@ -17,6 +17,7 @@ class AddPage extends StatefulWidget {
 class _AddPageState extends State<AddPage> {
   String? _title;
   String? _goal;
+  String? _unit;
   String? _imageURL;
   DateTime? _endDate;
 
@@ -61,13 +62,18 @@ class _AddPageState extends State<AddPage> {
                   IconButton(
                     onPressed: _title == null ||
                             _goal == null ||
+                            _unit == null ||
                             _imageURL == null ||
                             _endDate == null
                         ? null
                         : () {
-                            context
-                                .read<AddCubit>()
-                                .add(_title!, _goal!, _imageURL!, _endDate!);
+                            context.read<AddCubit>().add(
+                                  _title!,
+                                  _goal!,
+                                  _unit!,
+                                  _imageURL!,
+                                  _endDate!,
+                                );
                           },
                     icon: const Icon(Icons.check),
                   )
@@ -85,6 +91,13 @@ class _AddPageState extends State<AddPage> {
                   setState(
                     () {
                       _goal = newValue;
+                    },
+                  );
+                },
+                onUnitChanged: (newValue) {
+                  setState(
+                    () {
+                      _unit = newValue;
                     },
                   );
                 },
@@ -119,13 +132,14 @@ class _AddPageBody extends StatelessWidget {
       {Key? key,
       required this.onTitleChanged,
       required this.onGoalChanged,
+      required this.onUnitChanged,
       required this.onImageUrlChanged,
       required this.onDateChanged,
       this.selectedDateFormatted})
       : super(key: key);
-
   final Function(String) onTitleChanged;
   final Function(String) onGoalChanged;
+  final Function(String) onUnitChanged;
   final Function(String) onImageUrlChanged;
   final Function(DateTime?) onDateChanged;
   final String? selectedDateFormatted;
@@ -152,7 +166,7 @@ class _AddPageBody extends StatelessWidget {
         TextField(
           decoration: const InputDecoration(
             labelText: 'Cel',
-            hintText: 'km',
+            hintText: 'np: 50',
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.black, width: 1),
             ),
@@ -161,6 +175,20 @@ class _AddPageBody extends StatelessWidget {
             ),
           ),
           onChanged: onGoalChanged,
+        ),
+        const SizedBox(height: 20),
+        TextField(
+          decoration: const InputDecoration(
+            labelText: 'Jednostka celu',
+            hintText: 'np: km',
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.black, width: 1),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.green, width: 2),
+            ),
+          ),
+          onChanged: onUnitChanged,
         ),
         const SizedBox(height: 20),
         TextField(
