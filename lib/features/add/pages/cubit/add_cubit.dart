@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:moja_apka/repositories/goal_repository.dart';
+import 'package:moja_apka/domain/repositories/goal_repository.dart';
 import 'add_state.dart';
 
 class AddCubit extends Cubit<AddState> {

@@ -2,8 +2,8 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
-import 'package:moja_apka/model/goal_model.dart';
-import 'package:moja_apka/repositories/goal_repository.dart';
+import 'package:moja_apka/domain/model/goal_model.dart';
+import 'package:moja_apka/domain/repositories/goal_repository.dart';
 part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {

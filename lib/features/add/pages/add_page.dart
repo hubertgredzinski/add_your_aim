@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:moja_apka/domain/repositories/goal_repository.dart';
 import 'package:moja_apka/features/add/pages/cubit/add_cubit.dart';
 import 'package:moja_apka/features/add/pages/cubit/add_state.dart';
-import 'package:moja_apka/repositories/goal_repository.dart';
 
 class AddPage extends StatefulWidget {
   const AddPage({

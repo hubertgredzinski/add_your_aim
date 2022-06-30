@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moja_apka/domain/model/goal_model.dart';
+import 'package:moja_apka/domain/repositories/goal_repository.dart';
 import 'package:moja_apka/features/add/pages/add_page.dart';
 import 'package:moja_apka/features/auth/pages/user_profile.dart';
 import 'package:moja_apka/features/home/cubit/home_cubit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:moja_apka/features/weather/pages/weather_page.dart';
-import 'package:moja_apka/model/goal_model.dart';
-import 'package:moja_apka/repositories/goal_repository.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
