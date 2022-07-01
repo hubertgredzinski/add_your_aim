@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:moja_apka/core/enums.dart';
+import 'package:moja_apka/data/remote_data_sources/weather_remote_data_source.dart';
 import 'package:moja_apka/domain/model/weather_model.dart';
 import 'package:moja_apka/domain/repositories/weather_repository.dart';
 import 'package:moja_apka/features/weather/cubit/weather_cubit.dart';
@@ -15,15 +16,14 @@ class WeatherPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => WeatherCubit(
-        WeatherRepository(),
+        WeatherRepository(WeatherRemoteDataSource()),
       ),
       child: BlocListener<WeatherCubit, WeatherState>(
         listener: (context, state) {
           if (state.status == Status.error) {
-            final errorMessage = state.errorMessage ?? 'Unkown error';
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(errorMessage),
+              const SnackBar(
+                content: Center(child: Text('Wystąpił błąd, spróbuj ponownie')),
                 backgroundColor: Colors.red,
               ),
             );
@@ -70,28 +70,53 @@ class _DisplayWeatherWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<WeatherCubit, WeatherState>(
       builder: (context, state) {
-        return Column(
-          children: [
-            Text(
-              weatherModel.city,
-              style:
-                  GoogleFonts.lato(fontSize: 30, fontWeight: FontWeight.bold),
+        return Padding(
+            padding: const EdgeInsets.only(
+              left: 20,
+              right: 20,
             ),
-            const SizedBox(height: 20),
-            Text(
-              weatherModel.temperature.toString(),
-            ),
-            const SizedBox(height: 20),
-            Text(
-              weatherModel.condition,
-            ),
-            const SizedBox(height: 20),
-            Text(
-              weatherModel.defraIndex,
-            ),
-            const SizedBox(height: 20),
-          ],
-        );
+            child: Column(
+              children: [
+                Text(
+                  weatherModel.city,
+                  style: GoogleFonts.acme(
+                      fontSize: 60, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 30),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Temperatura: ',
+                      style: GoogleFonts.lato(
+                          fontSize: 25, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      weatherModel.temperature.toString(),
+                      style: GoogleFonts.lato(
+                          fontSize: 25, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 30),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Index defra: ',
+                      style: GoogleFonts.lato(
+                          fontSize: 25, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      weatherModel.defraIndex.toString(),
+                      style: GoogleFonts.lato(
+                          fontSize: 25, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 30),
+              ],
+            ));
       },
     );
   }
