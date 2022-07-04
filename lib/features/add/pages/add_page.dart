@@ -24,34 +24,33 @@ class _AddPageState extends State<AddPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AddCubit(GoalRepository()),
-      child: BlocListener<AddCubit, AddState>(
-        listener: (context, state) {
-          if (state.saved) {
-            Navigator.of(context).pop();
-          }
-          if (state.errorMessage.isNotEmpty) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Row(
-                  children: [
-                    const Icon(
-                      Icons.info_outline,
-                      color: Colors.white,
-                    ),
-                    Expanded(
-                      child:
-                          Text(state.errorMessage, textAlign: TextAlign.center),
-                    ),
-                  ],
+        create: (context) => AddCubit(GoalRepository()),
+        child: BlocConsumer<AddCubit, AddState>(
+          listener: (context, state) {
+            if (state.saved) {
+              Navigator.of(context).pop();
+            }
+            if (state.errorMessage.isNotEmpty) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Row(
+                    children: [
+                      const Icon(
+                        Icons.info_outline,
+                        color: Colors.white,
+                      ),
+                      Expanded(
+                        child: Text(state.errorMessage,
+                            textAlign: TextAlign.center),
+                      ),
+                    ],
+                  ),
+                  backgroundColor: Colors.red,
+                  duration: const Duration(seconds: 3),
                 ),
-                backgroundColor: Colors.red,
-                duration: const Duration(seconds: 3),
-              ),
-            );
-          }
-        },
-        child: BlocBuilder<AddCubit, AddState>(
+              );
+            }
+          },
           builder: (context, state) {
             return Scaffold(
               appBar: AppBar(
@@ -121,9 +120,7 @@ class _AddPageState extends State<AddPage> {
               ),
             );
           },
-        ),
-      ),
-    );
+        ));
   }
 }
 
