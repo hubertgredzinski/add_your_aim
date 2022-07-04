@@ -7,22 +7,13 @@ class WeatherRepository {
   Future<WeatherModel?> getWeatherModel({
     required String city,
   }) async {
-    final responseData = await _weatherRemoteDataSource.getWeatherData(
+    final json = await _weatherRemoteDataSource.getWeatherData(
       city: city,
     );
 
-    if (responseData == null) {
+    if (json == null) {
       return null;
     }
-
-    final name = responseData['location']['name'] as String;
-    final temperature = (responseData['current']['temp_c'] + 0.0) as double;
-    final airQuality =
-        responseData['current']['air_quality']['gb-defra-index'] as int;
-    return WeatherModel(
-      city: name,
-      defraIndex: airQuality,
-      temperature: temperature,
-    );
+    return WeatherModel.fromJson(json);
   }
 }
