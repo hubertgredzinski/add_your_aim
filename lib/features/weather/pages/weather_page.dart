@@ -15,11 +15,11 @@ class WeatherPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => WeatherCubit(
-        WeatherRepository(WeatherRemoteDataSource()),
-      ),
-      child: BlocListener<WeatherCubit, WeatherState>(
-        listener: (context, state) {
+        create: (context) => WeatherCubit(
+              WeatherRepository(WeatherRemoteDataSource()),
+            ),
+        child: BlocConsumer<WeatherCubit, WeatherState>(
+            listener: (context, state) {
           if (state.status == Status.error) {
             final errorMessage = state.errorMessage ?? 'Nieznany błąd';
             ScaffoldMessenger.of(context).showSnackBar(
@@ -29,33 +29,29 @@ class WeatherPage extends StatelessWidget {
               ),
             );
           }
-        },
-        child: BlocBuilder<WeatherCubit, WeatherState>(
-          builder: (context, state) {
-            final weatherModel = state.model;
-            return Scaffold(
-              body: Center(
-                child: Builder(builder: (context) {
-                  if (state.status == Status.loading) {
-                    return const Text('Loading');
-                  }
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      if (weatherModel != null)
-                        _DisplayWeatherWidget(
-                          weatherModel: weatherModel,
-                        ),
-                      _SearchWidget(),
-                    ],
-                  );
-                }),
-              ),
-            );
-          },
-        ),
-      ),
-    );
+        }, 
+        builder: (context, state) {
+          final weatherModel = state.model;
+          return Scaffold(
+            body: Center(
+              child: Builder(builder: (context) {
+                if (state.status == Status.loading) {
+                  return const Text('Loading');
+                }
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    if (weatherModel != null)
+                      _DisplayWeatherWidget(
+                        weatherModel: weatherModel,
+                      ),
+                    _SearchWidget(),
+                  ],
+                );
+              }),
+            ),
+          );
+        }));
   }
 }
 
