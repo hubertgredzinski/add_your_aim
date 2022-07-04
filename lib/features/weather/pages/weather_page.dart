@@ -21,9 +21,10 @@ class WeatherPage extends StatelessWidget {
       child: BlocListener<WeatherCubit, WeatherState>(
         listener: (context, state) {
           if (state.status == Status.error) {
+            final errorMessage = state.errorMessage ?? 'Nieznany błąd';
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Center(child: Text('Wystąpił błąd, spróbuj ponownie')),
+              SnackBar(
+                content: Text(errorMessage),
                 backgroundColor: Colors.red,
               ),
             );
@@ -39,7 +40,7 @@ class WeatherPage extends StatelessWidget {
                     return const Text('Loading');
                   }
                   return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       if (weatherModel != null)
                         _DisplayWeatherWidget(
@@ -80,9 +81,9 @@ class _DisplayWeatherWidget extends StatelessWidget {
                 Text(
                   weatherModel.city,
                   style: GoogleFonts.acme(
-                      fontSize: 60, fontWeight: FontWeight.bold),
+                      fontSize: 65, fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 35),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -98,7 +99,7 @@ class _DisplayWeatherWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 35),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -114,7 +115,6 @@ class _DisplayWeatherWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 30),
               ],
             ));
       },
