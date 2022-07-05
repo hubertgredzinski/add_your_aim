@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moja_apka/core/enums.dart';
 import 'package:moja_apka/domain/model/goal_model.dart';
 import 'package:moja_apka/domain/repositories/goal_repository.dart';
 import 'package:moja_apka/features/add/pages/add_page.dart';
@@ -92,36 +93,51 @@ class _HomePageState extends State<HomePage> {
           child: BlocBuilder<HomeCubit, HomeState>(
             builder: (context, state) {
               final goalsModel = state.goalslist;
-              return ListView(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                children: [
-                  for (final goalModel in goalsModel)
-                    Dismissible(
-                      key: ValueKey(goalModel.id),
-                      background: const DecoratedBox(
-                        decoration: BoxDecoration(color: Colors.red),
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: Padding(
-                            padding: EdgeInsets.only(right: 32.0),
-                            child: Icon(Icons.delete),
+              switch (state.status) {
+                case Status.initial:
+                  return const Center(
+                    child: Text('Initial Test'),
+                  );
+                case Status.loading:
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                case Status.success:
+                  return ListView(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    children: [
+                      for (final goalModel in goalsModel)
+                        Dismissible(
+                          key: ValueKey(goalModel.id),
+                          background: const DecoratedBox(
+                            decoration: BoxDecoration(color: Colors.red),
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: Padding(
+                                padding: EdgeInsets.only(right: 32.0),
+                                child: Icon(Icons.delete),
+                              ),
+                            ),
+                          ),
+                          confirmDismiss: (direction) async {
+                            return direction == DismissDirection.endToStart;
+                          },
+                          onDismissed: (direction) {
+                            context
+                                .read<HomeCubit>()
+                                .remove(documentID: goalModel.id);
+                          },
+                          child: AimCategory(
+                            goalModel: goalModel,
                           ),
                         ),
-                      ),
-                      confirmDismiss: (direction) async {
-                        return direction == DismissDirection.endToStart;
-                      },
-                      onDismissed: (direction) {
-                        context
-                            .read<HomeCubit>()
-                            .remove(documentID: goalModel.id);
-                      },
-                      child: AimCategory(
-                        goalModel: goalModel,
-                      ),
-                    ),
-                ],
-              );
+                    ],
+                  );
+                case Status.error:
+                  return Center(
+                    child: Text(state.errorMessage ?? 'Nieznany błąd'),
+                  );
+              }
             },
           ),
         );

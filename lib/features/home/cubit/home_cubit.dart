@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
+import 'package:moja_apka/core/enums.dart';
 import 'package:moja_apka/domain/model/goal_model.dart';
 import 'package:moja_apka/domain/repositories/goal_repository.dart';
 part 'home_state.dart';
@@ -13,30 +14,32 @@ class HomeCubit extends Cubit<HomeState> {
 
   StreamSubscription? _streamSubscription;
 
-  Future<void> start() async {
+  Future<void> start() async { emit(const HomeState(status: Status.loading));
+    try {
     _streamSubscription = _goalRepository.getGoalsStream().listen(
       (goalslist) {
         emit(
-          HomeState(goalslist: goalslist),
+          HomeState(goalslist: goalslist,
+          status: Status.success ),
         );
       },
-    )..onError(
-        (error) {
-          emit(
-            const HomeState(
-              loadingErrorOccured: true,
-            ),
-          );
-        },
+    );}catch (error) {
+      emit(
+        HomeState(
+          status: Status.error,
+          errorMessage: error.toString(),
+        ),
       );
+    }
   }
 
-  Future<void> remove({required String documentID}) async {
+  Future<void> remove({required String documentID}) async { emit(const HomeState(status: Status.loading));
     try {
       await _goalRepository.remove(id: documentID);
     } catch (error) {
       emit(
-        const HomeState(loadingErrorOccured: true),
+         HomeState(status: Status.error,
+        errorMessage: error.toString()),
       );
       start();
     }
