@@ -3,13 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:moja_apka/domain/model/goal_model.dart';
 
 class GoalRepository {
-  
   Stream<List<GoalModel>> getGoalsStream() {
     final userID = FirebaseAuth.instance.currentUser?.uid;
     if (userID == null) {
       throw Exception('User is not logged in');
     }
-    return  FirebaseFirestore.instance
+    return FirebaseFirestore.instance
         .collection('users')
         .doc(userID)
         .collection('items')

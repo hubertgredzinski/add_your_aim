@@ -29,8 +29,8 @@ class WeatherPage extends StatelessWidget {
               ),
             );
           }
-        }, 
-        builder: (context, state) {
+        },
+         builder: (context, state) {
           final weatherModel = state.model;
           return Scaffold(
             body: Center(
@@ -75,7 +75,7 @@ class _DisplayWeatherWidget extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  weatherModel.city,
+                  weatherModel.location.toString(),
                   style: GoogleFonts.acme(
                       fontSize: 65, fontWeight: FontWeight.bold),
                 ),

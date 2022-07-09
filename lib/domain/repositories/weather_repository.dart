@@ -15,5 +15,6 @@ class WeatherRepository {
       return null;
     }
     return WeatherModel.fromJson(json);
+    
   }
 }

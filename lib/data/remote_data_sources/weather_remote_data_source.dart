@@ -12,16 +12,5 @@ class WeatherRemoteDataSource {
       throw Exception(
           error.response?.data['error']['message'] ?? 'Nieznany błąd');
     }
-
-    // if (responseData == null) {return null;}
-
-    //   final name = responseData['location']['name'] as String;
-    //   final temperature = (responseData['current']['temp_c'] + 0.0) as double;
-    //   final airQuality = responseData['current']['air_quality']['gb-defra-index'] as int;
-    // return  WeatherModel(
-    //   city: name,
-    //   defraIndex: airQuality,
-    //   temperature: temperature,
-    // );
   }
 }
