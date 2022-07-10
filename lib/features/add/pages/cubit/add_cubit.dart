@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:moja_apka/domain/repositories/goal_repository.dart';
 import 'add_state.dart';
 
+@injectable
 class AddCubit extends Cubit<AddState> {
   AddCubit({required this.goalRepository})
       : super(

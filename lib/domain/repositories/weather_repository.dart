@@ -1,6 +1,8 @@
+import 'package:injectable/injectable.dart';
 import 'package:moja_apka/data/remote_data_sources/weather_remote_data_source.dart';
 import 'package:moja_apka/domain/model/weather_model.dart';
 
+@injectable
 class WeatherRepository {
   WeatherRepository({required this.weatherRemoteDataSource});
   final WeatherRemoteDataSource weatherRemoteDataSource;

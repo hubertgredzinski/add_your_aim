@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
 import 'package:moja_apka/app/core/enums.dart';
@@ -7,6 +8,7 @@ import 'package:moja_apka/domain/model/goal_model.dart';
 import 'package:moja_apka/domain/repositories/goal_repository.dart';
 part 'home_state.dart';
 
+@injectable
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit({required this.goalRepository}) : super(const HomeState());
 

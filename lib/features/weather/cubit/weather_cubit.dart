@@ -1,9 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:moja_apka/app/core/enums.dart';
 import 'package:moja_apka/domain/model/weather_model.dart';
 import 'package:moja_apka/domain/repositories/weather_repository.dart';
 part 'weather_state.dart';
 
+@injectable
 class WeatherCubit extends Cubit<WeatherState> {
   WeatherCubit({required this.weatherRepository}) : super(const WeatherState());
 
