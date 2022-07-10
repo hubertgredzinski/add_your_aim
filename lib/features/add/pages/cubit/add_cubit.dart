@@ -4,11 +4,11 @@ import 'package:moja_apka/domain/repositories/goal_repository.dart';
 import 'add_state.dart';
 
 class AddCubit extends Cubit<AddState> {
-  AddCubit(this._goalRepository)
+  AddCubit({required this.goalRepository})
       : super(
           const AddState(),
         );
-  final GoalRepository _goalRepository;
+  final GoalRepository goalRepository;
 
   Future<void> add(
     String title,
@@ -18,7 +18,7 @@ class AddCubit extends Cubit<AddState> {
     DateTime endDate,
   ) async {
     try {
-      await _goalRepository.add(title, goal, unit, imageURL, endDate);
+      await goalRepository.add(title, goal, unit, imageURL, endDate);
       emit(
         const AddState(saved: true),
       );

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:moja_apka/core/enums.dart';
-import 'package:moja_apka/data/remote_data_sources/weather_remote_data_source.dart';
+import 'package:moja_apka/app/core/enums.dart';
+import 'package:moja_apka/app/injection_container.dart';
 import 'package:moja_apka/domain/model/weather_model.dart';
-import 'package:moja_apka/domain/repositories/weather_repository.dart';
 import 'package:moja_apka/features/weather/cubit/weather_cubit.dart';
 
 class WeatherPage extends StatelessWidget {
@@ -15,9 +14,7 @@ class WeatherPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => WeatherCubit(
-              WeatherRepository(WeatherRemoteDataSource()),
-            ),
+        create: (context) => getIt<WeatherCubit>(),
         child: BlocConsumer<WeatherCubit, WeatherState>(
             listener: (context, state) {
           if (state.status == Status.error) {
@@ -29,8 +26,7 @@ class WeatherPage extends StatelessWidget {
               ),
             );
           }
-        },
-         builder: (context, state) {
+        }, builder: (context, state) {
           final weatherModel = state.model;
           return Scaffold(
             body: Center(

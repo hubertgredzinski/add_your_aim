@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:moja_apka/domain/repositories/goal_repository.dart';
+import 'package:moja_apka/app/injection_container.dart';
 import 'package:moja_apka/features/add/pages/cubit/add_cubit.dart';
 import 'package:moja_apka/features/add/pages/cubit/add_state.dart';
 
@@ -24,7 +24,7 @@ class _AddPageState extends State<AddPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => AddCubit(GoalRepository()),
+        create: (context) => getIt<AddCubit>(),
         child: BlocConsumer<AddCubit, AddState>(
           listener: (context, state) {
             if (state.saved) {

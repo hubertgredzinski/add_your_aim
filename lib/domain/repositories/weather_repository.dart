@@ -2,12 +2,12 @@ import 'package:moja_apka/data/remote_data_sources/weather_remote_data_source.da
 import 'package:moja_apka/domain/model/weather_model.dart';
 
 class WeatherRepository {
-  WeatherRepository(this._weatherRemoteDataSource);
-  final WeatherRemoteDataSource _weatherRemoteDataSource;
+  WeatherRepository({required this.weatherRemoteDataSource});
+  final WeatherRemoteDataSource weatherRemoteDataSource;
   Future<WeatherModel?> getWeatherModel({
     required String city,
   }) async {
-    final json = await _weatherRemoteDataSource.getWeatherData(
+    final json = await weatherRemoteDataSource.getWeatherData(
       city: city,
     );
 

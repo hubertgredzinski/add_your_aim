@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:moja_apka/core/enums.dart';
+import 'package:moja_apka/app/core/enums.dart';
+import 'package:moja_apka/app/injection_container.dart';
+
 import 'package:moja_apka/domain/model/goal_model.dart';
-import 'package:moja_apka/domain/repositories/goal_repository.dart';
 import 'package:moja_apka/features/add/pages/add_page.dart';
 import 'package:moja_apka/features/auth/pages/user_profile.dart';
 import 'package:moja_apka/features/home/cubit/home_cubit.dart';
@@ -89,7 +90,7 @@ class _HomePageState extends State<HomePage> {
           return const WeatherPage();
         }
         return BlocProvider(
-          create: (context) => HomeCubit(GoalRepository())..start(),
+          create: (context) => getIt<HomeCubit>()..start(),
           child: BlocBuilder<HomeCubit, HomeState>(
             builder: (context, state) {
               final goalsModel = state.goalslist;
