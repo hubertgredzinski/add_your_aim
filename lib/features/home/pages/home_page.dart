@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moja_apka/app/core/enums.dart';
 import 'package:moja_apka/app/injection_container.dart';
-
 import 'package:moja_apka/domain/model/goal_model.dart';
 import 'package:moja_apka/features/add/pages/add_page.dart';
 import 'package:moja_apka/features/auth/pages/user_profile.dart';
