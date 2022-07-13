@@ -9,7 +9,6 @@ class GoalModel {
       required this.goal,
       required this.unit,
       required this.endDate});
-
   final String id;
   final String title;
   final String imageURL;

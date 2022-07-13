@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:moja_apka/model/goal_model.dart';
+import 'package:injectable/injectable.dart';
+import 'package:moja_apka/domain/model/goal_model.dart';
 
+@injectable
 class GoalRepository {
   Stream<List<GoalModel>> getGoalsStream() {
     final userID = FirebaseAuth.instance.currentUser?.uid;

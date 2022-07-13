@@ -1,25 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moja_apka/app/core/enums.dart';
+import 'package:moja_apka/app/injection_container.dart';
+import 'package:moja_apka/domain/model/goal_model.dart';
 import 'package:moja_apka/features/add/pages/add_page.dart';
 import 'package:moja_apka/features/auth/pages/user_profile.dart';
 import 'package:moja_apka/features/home/cubit/home_cubit.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:moja_apka/model/goal_model.dart';
-import 'package:moja_apka/repositories/goal_repository.dart';
+import 'package:moja_apka/features/weather/pages/weather_page.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({
     Key? key,
   }) : super(key: key);
+  @override
+  _HomePageState createState() => _HomePageState();
+}
 
+class _HomePageState extends State<HomePage> {
+  var currentIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
-        title: const Center(
-          child: Text('Cele'),
-        ),
+        title: Builder(builder: (context) {
+          if (currentIndex == 1) {
+            return const Center(
+              child: Text('Pogoda'),
+            );
+          }
+          return const Center(
+            child: Text('Cele'),
+          );
+        }),
         actions: [
           IconButton(
             onPressed: () {
@@ -33,55 +47,101 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              fullscreenDialog: true,
-              builder: (context) => const AddPage(),
-            ),
-          );
-        },
-        child: const Icon(Icons.add),
-      ),
-      body: BlocProvider(
-        create: (context) => HomeCubit(GoalRepository())..start(),
-        child: BlocBuilder<HomeCubit, HomeState>(
-          builder: (context, state) {
-            final goalsModel = state.goalslist;
-            return ListView(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              children: [
-                for (final goalModel in goalsModel)
-                  Dismissible(
-                    key: ValueKey(goalModel.id),
-                    background: const DecoratedBox(
-                      decoration: BoxDecoration(color: Colors.red),
-                      child: Align(
-                        alignment: Alignment.centerRight,
-                        child: Padding(
-                          padding: EdgeInsets.only(right: 32.0),
-                          child: Icon(Icons.delete),
-                        ),
-                      ),
-                    ),
-                    confirmDismiss: (direction) async {
-                      return direction == DismissDirection.endToStart;
-                    },
-                    onDismissed: (direction) {
-                      context
-                          .read<HomeCubit>()
-                          .remove(documentID: goalModel.id);
-                    },
-                    child: AimCategory(
-                      goalModel: goalModel,
-                    ),
-                  ),
-              ],
+      floatingActionButton: Builder(builder: (context) {
+        if (currentIndex == 1) {
+          return const SizedBox.shrink();
+        }
+        return FloatingActionButton(
+          backgroundColor: const Color.fromARGB(221, 50, 50, 50),
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                fullscreenDialog: true,
+                builder: (context) => const AddPage(),
+              ),
             );
           },
-        ),
+          child: const Icon(Icons.add),
+        );
+      }),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white54,
+        iconSize: 27,
+        currentIndex: currentIndex,
+        onTap: (index) {
+          setState(() {
+            currentIndex = index;
+          });
+        },
+        items: const [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.list_alt),
+              label: 'Cele',
+              backgroundColor: Colors.green),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.sunny),
+              label: 'Pogoda',
+              backgroundColor: Colors.green)
+        ],
       ),
+      body: Builder(builder: (context) {
+        if (currentIndex == 1) {
+          return const WeatherPage();
+        }
+        return BlocProvider(
+          create: (context) => getIt<HomeCubit>()..start(),
+          child: BlocBuilder<HomeCubit, HomeState>(
+            builder: (context, state) {
+              final goalsModel = state.goalslist;
+              switch (state.status) {
+                case Status.initial:
+                  return const Center(
+                    child: Text('Initial Test'),
+                  );
+                case Status.loading:
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                case Status.success:
+                  return ListView(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    children: [
+                      for (final goalModel in goalsModel)
+                        Dismissible(
+                          key: ValueKey(goalModel.id),
+                          background: const DecoratedBox(
+                            decoration: BoxDecoration(color: Colors.red),
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: Padding(
+                                padding: EdgeInsets.only(right: 32.0),
+                                child: Icon(Icons.delete),
+                              ),
+                            ),
+                          ),
+                          confirmDismiss: (direction) async {
+                            return direction == DismissDirection.endToStart;
+                          },
+                          onDismissed: (direction) {
+                            context
+                                .read<HomeCubit>()
+                                .remove(documentID: goalModel.id);
+                          },
+                          child: AimCategory(
+                            goalModel: goalModel,
+                          ),
+                        ),
+                    ],
+                  );
+                case Status.error:
+                  return Center(
+                    child: Text(state.errorMessage ?? 'Nieznany błąd'),
+                  );
+              }
+            },
+          ),
+        );
+      }),
     );
   }
 }
