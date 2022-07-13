@@ -12,8 +12,6 @@
 
 👉 Also you can see the weather of your city and infra index which is determinant of air quality. 
 
-Video of app 👇
-
 Photos of app 👇
 
 ![1](https://user-images.githubusercontent.com/100992112/178105197-fe1ef0f5-2c7a-4b40-9348-43aafffc4657.png)
