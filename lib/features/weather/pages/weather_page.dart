@@ -70,11 +70,6 @@ class _DisplayWeatherWidget extends StatelessWidget {
             ),
             child: Column(
               children: [
-                Text(
-                  weatherModel.location.toString(),
-                  style: GoogleFonts.acme(
-                      fontSize: 65, fontWeight: FontWeight.bold),
-                ),
                 const SizedBox(height: 35),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -82,38 +77,22 @@ class _DisplayWeatherWidget extends StatelessWidget {
                     Text(
                       'Temperatura: ',
                       style: GoogleFonts.lato(
-                          fontSize: 25, fontWeight: FontWeight.bold),
+                          fontSize: 30, fontWeight: FontWeight.bold),
                     ),
                     Text(
                       weatherModel.temperature.toString(),
                       style: GoogleFonts.lato(
-                          fontSize: 25, fontWeight: FontWeight.bold),
+                          fontSize: 30, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
                 const SizedBox(height: 35),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Index defra: ',
-                      style: GoogleFonts.lato(
-                          fontSize: 25, fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      weatherModel.defraIndex.toString(),
-                      style: GoogleFonts.lato(
-                          fontSize: 25, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
               ],
             ));
       },
     );
   }
 }
-
 class _SearchWidget extends StatelessWidget {
   _SearchWidget({
     Key? key,
